@@ -2,7 +2,7 @@
   hosts: local
   connection: local
   vars:
-    instances: ["mongodb", "redis", "rabbitmq"]
+    instances: ["mongodb", "redis", "mysql", "rabbitmq"]
     image_id: ami-0220d79f3f480ecf5
   tasks:
     - name: create ec2 instances
@@ -22,4 +22,4 @@
     - name: create route53 record
       debug:
         msg: "Instance Name {{ item.item }} PrivateIP: {{ item.instances[0].private_ip_address }}"
-      loop: "{{ ec2_output.result }}"
+      loop: "{{ ec2_output.results }}"
