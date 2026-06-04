@@ -2,7 +2,7 @@
   hosts: local
   connection: local
   vars:
-    instances: ["mongodb", "redis", "mysql", "rabbitmq", "frontend"]
+    instances: ["mongodb", "redis", "mysql", "rabbitmq", "frontend", "user", "cart", "payment", "catalogue", "shipping"]
     image_id: ami-0220d79f3f480ecf5
     domain_name: devpreactice.online
     action: create
@@ -73,7 +73,14 @@
       loop: "{{ instances }}"
       when: 
       - action == "delete"
-      - item == "frontend"      
+      - item == "frontend"
+
+    - name: delete ec2 instances
+      amazon.aws.ec2_instances:
+        state: absent
+        name: "roboshop-{{ item }}"
+      loop: "{{ instances }}"
+      when: action == "delete"  
 
 
 
