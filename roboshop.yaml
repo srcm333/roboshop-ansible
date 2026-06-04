@@ -79,6 +79,7 @@
       amazon.aws.ec2_instance:
         state: absent
         name: "roboshop-{{ item }}"
+        wait: false
       loop: "{{ instances }}"
       when: action == "delete"  
 
