@@ -29,7 +29,7 @@
       amazon.aws.route53:
         state: present
         zone: "{{ domain_name }}"
-        record: "{{ item.devpreactice.online }}" #mongodb.devpreactice.online
+        record: "{{ item.item }}.{{ domain_name }}" #mongodb.devpreactice.online
         type: A
         ttl: 1
         value: "{{ item.instances[0].private_ip_address }"
@@ -40,7 +40,7 @@
       amazon.aws.route53:
         state: present
         zone: "{{ domain_name }}"
-        record: "{{ item.devpreactice.online }}" #devpreactice.online
+        record: "{{ domain_name }}"  #devpreactice.online
         type: A
         ttl: 1
         value: "{{ item.instances[0].public_ip_address }"
