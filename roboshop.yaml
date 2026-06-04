@@ -19,7 +19,31 @@
     #  debug:
     #    msg: "{{ ec2_output }}"
 
-    - name: create route53 record
-      debug:
-        msg: "Instance Name {{ item.item }} PrivateIP: {{ item.instances[0].private_ip_address }}"
+    #- name: create route53 record
+    #  debug:
+    #    msg: "Instance Name {{ item.item }} PrivateIP: {{ item.instances[0].private_ip_address }}"
+    #  loop: "{{ ec2_output.results }}"
+
+    - name: create r53 record
+      amazon.aws.reoute53:
+        state: present
+        zone: "{{ domain_name }}"
+        record: "{{ item.devpreactice.online }}" #mongodb.devpreactice.online
+        type: A
+        ttl: 1
+        value: "{{ item.instances[0].private_ip_address }"
       loop: "{{ ec2_output.results }}"
+
+    - name: create r53 record
+      amazon.aws.reoute53:
+        state: present
+        zone: "{{ domain_name }}"
+        record: "{{ item.devpreactice.online }}" #devpreactice.online
+        type: A
+        ttl: 1
+        value: "{{ item.instances[0].public_ip_address }"
+      loop: "{{ ec2_output.results }}"
+      when: item.item == "frontend"
+
+
+
