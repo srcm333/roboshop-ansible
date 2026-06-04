@@ -24,7 +24,7 @@
     #    msg: "Instance Name {{ item.item }} PrivateIP: {{ item.instances[0].private_ip_address }}"
     #  loop: "{{ ec2_output.results }}"
 
-    - name: create r53 record
+    - name: create r53 records
       amazon.aws.reoute53:
         state: present
         zone: "{{ domain_name }}"
@@ -32,6 +32,7 @@
         type: A
         ttl: 1
         value: "{{ item.instances[0].private_ip_address }"
+        overwrite: true
       loop: "{{ ec2_output.results }}"
 
     - name: create r53 record
@@ -42,6 +43,7 @@
         type: A
         ttl: 1
         value: "{{ item.instances[0].public_ip_address }"
+        overwrite: true
       loop: "{{ ec2_output.results }}"
       when: item.item == "frontend"
 
