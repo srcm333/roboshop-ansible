@@ -2,6 +2,20 @@
   hosts: redis
   become: yes
   tasks:
+    - name: Create roboshop log directory
+      file:
+      path: /var/log/roboshop
+      state: directory
+      owner: ec2-user
+      group: ec2-user
+      mode: '0755'
+    - name: Create ansible log file
+      file:
+      path: /var/log/roboshop/ansible.log
+      state: touch
+      owner: ec2-user
+      group: ec2-user
+      mode: '0644'
     - name: enable redis 7
       command: dnf module enable redis:7 -y
     - name: install redis
@@ -10,7 +24,7 @@
         state: present
     - name: allow remote connections
       replace:
-        path: /etc/mongod.conf
+        path: /etc/redis/redis.conf
         regexp: "127.0.0.1"
         replace: "0.0.0.0" 
     - name: change protected mode
